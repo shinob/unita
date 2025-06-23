@@ -1,35 +1,50 @@
-<!-- views/new_meeting.erb -->
-  <h1>行事の新規作成</h1>
+<h1 class="text-2xl font-bold text-gray-800 mb-6">新しい予定の作成</h1>
 
-  <form action="<%= APP_ROUTE %>/org/meetings/create" method="post">
-    <div>
-      <label for="title">タイトル:</label><br>
-      <input type="text" name="title" id="title" required>
-    </div>
+<form action="<%= APP_ROUTE %>/org/meetings/create" method="post" class="bg-white p-6 rounded-lg shadow max-w-2xl mx-auto space-y-6">
+  <%# タイトル %>
+  <div>
+    <label for="title" class="block text-sm font-medium text-gray-700 mb-1">タイトル</label>
+    <input type="text" name="title" id="title" required
+           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-200 focus:outline-none">
+  </div>
 
-    <div>
-      <label for="description">詳細:</label><br>
-      <textarea name="description" id="description" rows="4" cols="50"></textarea>
-    </div>
+  <%# 説明 %>
+  <div>
+    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">詳細</label>
+    <textarea name="description" id="description" rows="4"
+              class="w-full px-4 py-2 border border-gray-300 rounded-md resize-y focus:ring focus:ring-blue-200 focus:outline-none"></textarea>
+  </div>
 
-    <div>
-      <label for="scheduled_at">開催日時 (YYYY-MM-DD HH:MM):</label><br>
-      <input type="datetime-local" name="scheduled_at" id="scheduled_at" required>
-    </div>
-    
-    <div>
-      <label for="ended_at">終了日時 (YYYY-MM-DD HH:MM):</label><br>
-      <input type="datetime-local" name="ended_at" id="ended_at" required>
-    </div>
-    
-    <div>
-      <label for="deadline_at">出欠締切日時 (YYYY-MM-DD HH:MM):</label><br>
-      <input type="datetime-local" name="deadline_at" id="deadline_at" required>
-    </div>
+  <%# 開始日時 %>
+  <div>
+    <label for="scheduled_at" class="block text-sm font-medium text-gray-700 mb-1">開催日時</label>
+    <input type="datetime-local" name="scheduled_at" id="scheduled_at" required
+           class="w-full px-4 py-2 border border-gray-300 rounded-md">
+  </div>
 
-    <div>
-      <button type="submit">作成する</button>
-    </div>
-  </form>
+  <%# 終了日時 %>
+  <div>
+    <label for="ended_at" class="block text-sm font-medium text-gray-700 mb-1">終了日時</label>
+    <input type="datetime-local" name="ended_at" id="ended_at" required
+           class="w-full px-4 py-2 border border-gray-300 rounded-md">
+  </div>
 
-  <p><a href="<%= APP_ROUTE %>/org/meetings">← 行事一覧に戻る</a></p>
+  <%# 出欠締切日時 %>
+  <div>
+    <label for="deadline_at" class="block text-sm font-medium text-gray-700 mb-1">出欠回答の締切日時</label>
+    <input type="datetime-local" name="deadline_at" id="deadline_at" required
+           class="w-full px-4 py-2 border border-gray-300 rounded-md">
+  </div>
+
+  <%# 送信ボタン %>
+  <div class="text-center">
+    <button type="submit"
+            class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+      作成する
+    </button>
+  </div>
+</form>
+
+<p class="text-center mt-6">
+  <a href="<%= APP_ROUTE %>/org/meetings" class="text-blue-600 hover:underline">← 予定一覧に戻る</a>
+</p>

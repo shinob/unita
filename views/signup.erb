@@ -1,29 +1,51 @@
-<% @title = "ユーザー登録" %>
+<% @title = "新規ユーザー登録" %>
 
-<h1 class="page-title"><%= @title %></h1>
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold text-center text-gray-800 mb-6"><%= @title %></h1>
 
-<% if @error %>
-  <div class="alert error"><%= @error %></div>
-<% end %>
+    <% if @error %>
+      <div class="bg-red-100 text-red-700 px-4 py-3 rounded mb-4">
+        <%= @error %>
+      </div>
+    <% end %>
 
-<form action="<%= APP_ROUTE %>/signup" method="post" class="form-card">
-  <label>名前:<br>
-    <input type="text" name="name" required>
-  </label>
+    <form action="<%= APP_ROUTE %>/signup" method="post" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">名前</label>
+        <input type="text" name="name" required
+               class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
+      </div>
 
-  <label>メールアドレス:<br>
-    <input type="email" name="email" required>
-  </label>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">メールアドレス</label>
+        <input type="email" name="email" required
+               class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
+      </div>
 
-  <label>パスワード:<br>
-    <input type="password" name="password" required>
-  </label>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">パスワード</label>
+        <input type="password" name="password" required
+               class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
+      </div>
 
-  <label>新しい組織名:<br>
-    <input type="text" name="organization_name" required>
-  </label>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">新しい組織名</label>
+        <input type="text" name="organization_name" required
+               class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
+      </div>
 
-  <input type="submit" value="登録して開始" class="btn">
-</form>
+      <div>
+        <button type="submit"
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+          登録して開始
+        </button>
+      </div>
+    </form>
 
-<p><a href="<%= APP_ROUTE %>/login">← ログイン画面へ</a></p>
+    <p class="mt-4 text-center text-sm text-gray-600">
+      すでにアカウントをお持ちの方は
+      <a href="<%= APP_ROUTE %>/login" class="text-blue-600 hover:underline">ログイン</a>
+    </p>
+  </div>
+</div>

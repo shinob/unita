@@ -1,21 +1,39 @@
-<% @title = "出欠管理" %>
+<% @title = "出欠管理ログイン" %>
 
-<h1 class="page-title"><%= @title %></h1>
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h1 class="text-2xl font-bold text-center text-gray-800 mb-6"><%= @title %></h1>
 
-<% if @error %>
-  <div class="alert error"><%= @error %></div>
-<% end %>
+    <% if @error %>
+      <div class="bg-red-100 text-red-700 px-4 py-3 rounded mb-4">
+        <%= @error %>
+      </div>
+    <% end %>
 
-<form action="<%= APP_ROUTE %>/login" method="post" class="form-card">
-  <label>Email:<br />
-    <input type="email" name="email" required>
-  </label>
+    <form action="<%= APP_ROUTE %>/login" method="post" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">メールアドレス</label>
+        <input type="email" name="email" required
+               class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
+      </div>
 
-  <label>Password:<br />
-    <input type="password" name="password" required>
-  </label>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">パスワード</label>
+        <input type="password" name="password" required
+               class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
+      </div>
 
-  <input type="submit" value="ログイン" class="btn">
-</form>
+      <div>
+        <button type="submit"
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+          ログイン
+        </button>
+      </div>
+    </form>
 
-<p><a href="<%= APP_ROUTE %>/signup">新規登録はこちら</a></p>
+    <p class="mt-4 text-center text-sm text-gray-600">
+      アカウントをお持ちでない方は
+      <a href="<%= APP_ROUTE %>/signup" class="text-blue-600 hover:underline">新規登録</a>
+    </p>
+  </div>
+</div>

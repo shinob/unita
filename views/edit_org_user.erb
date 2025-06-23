@@ -1,37 +1,43 @@
-<h1>ユーザー編集</h1>
+<h1 class="text-2xl font-bold mb-6 text-center">ユーザー編集</h1>
 
-<form action="<%= request.script_name %>/org/users/<%= @user.id %>/update" method="post">
-  <div>
-    <label>名前:</label>
-    <input type="text" name="name" value="<%= @user.name %>" required>
-  </div>
+<div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">
+  <form action="<%= request.script_name %>/org/users/<%= @user.id %>/update" method="post" class="space-y-4">
+    
+    <div>
+      <label class="block text-sm font-medium text-gray-700">名前</label>
+      <input type="text" name="name" value="<%= @user.name %>" required
+             class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
+    </div>
 
-  <div>
-    <label>メールアドレス:</label>
-    <input type="email" name="email" value="<%= @user.email %>" required>
-  </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">メールアドレス</label>
+      <input type="email" name="email" value="<%= @user.email %>" required
+             class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
+    </div>
 
-  <div>
-    <label>パスワード（変更する場合のみ入力）:</label>
-    <input type="password" name="password" placeholder="新しいパスワード">
-  </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">パスワード（変更する場合のみ入力）</label>
+      <input type="password" name="password" placeholder="新しいパスワード"
+             class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
+    </div>
 
-  <div>&nbsp;</div>
-
-  <div>
-    <label class="selectbox-2">ロール:
-      <select name="role" required>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">ロール</label>
+      <select name="role" required
+              class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
         <option value="org_admin" <%= 'selected' if @membership.role == 'org_admin' %>>組織管理者</option>
         <option value="organizer" <%= 'selected' if @membership.role == 'organizer' %>>会議運営者</option>
         <option value="user" <%= 'selected' if @membership.role == 'user' %>>参加者</option>
       </select>
-    </label>
-  </div>
+    </div>
 
-  <div>&nbsp;</div>
-  
-  <div style="margin-top: 10px;">
-    <button type="submit">更新</button>
-    <a href="<%= request.script_name %>/org/users" style="margin-left: 10px;">キャンセル</a>
-  </div>
-</form>
+    <div class="flex justify-between items-center mt-6">
+      <button type="submit"
+              class="bg-blue-600 text-white py-2 px-6 rounded hover:bg-blue-700 transition">
+        更新
+      </button>
+      <a href="<%= request.script_name %>/org/users"
+         class="text-gray-600 hover:underline text-sm">← ユーザー一覧に戻る</a>
+    </div>
+  </form>
+</div>

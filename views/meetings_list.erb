@@ -1,57 +1,66 @@
-<% @title = "予定一覧" %>
-  <h1>予定一覧</h1>
+<h1 class="text-2xl font-bold text-gray-800 mb-6">予定一覧</h1>
 
-  <table>
-    <thead>
-      <tr>
-        <th>タイトル</th>
-        <th>説明</th>
-        <th>開催日時</th>
-        <th>締切日時</th>
-        <th>操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @meetings.each do |meeting| %>
-        <tr class="<%= status?(meeting.id) %>">
-          <td><%= meeting.title %></td>
-          <td><%= meeting.description %></td>
-          <td class="algin_center"><%= meeting.scheduled_at.strftime('%Y-%m-%d %H:%M') %></td>
-          <td class="algin_center"><%= meeting.deadline_at.strftime('%Y-%m-%d %H:%M') %></td>
-          <td>
-            <a href="<%= request.script_name %>/org/meetings/<%= meeting.id %>">詳細</a>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-  
-  <table class="noborder">
+<table class="w-full table-auto border border-gray-300 shadow-sm rounded-lg overflow-hidden bg-white">
+  <thead class="bg-blue-600 text-white">
     <tr>
-      <td class="noborder">
-        <table class="box"><tbody><tr class="attending"><td>&nbsp;</td></tr></tbody></table>：出席
-      </td>
-      <td class="noborder">
-        <table class="box"><tbody><tr class="absent"><td>&nbsp;</td></tr></tbody></table>：欠席
-      </td>
-      <td class="noborder">
-        <table class="box"><tbody><tr class="undecided"><td>&nbsp;</td></tr></tbody></table>：未定
-      </td>
+      <th class="px-4 py-2">タイトル</th>
+      <th class="px-4 py-2">説明</th>
+      <th class="px-4 py-2 text-center">開催日時</th>
+      <th class="px-4 py-2 text-center">締切日時</th>
+      <th class="px-4 py-2 text-center">操作</th>
     </tr>
-  </table>
-  
-  <% if organizer? %>
-  <p><a href="<%= request.script_name %>/org/meetings/new">＋ 新しい予定を作成</a></p>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @meetings.each do |meeting| %>
+      <% status_class = case status?(meeting.id)
+        when 'attending' then 'bg-green-50'
+        when 'absent' then 'bg-red-50'
+        else 'bg-gray-100'
+      end %>
+      <tr class="border-t <%= status_class %> hover:bg-yellow-50 transition">
+        <td class="px-4 py-2 font-medium text-gray-900"><%= meeting.title %></td>
+        <td class="px-4 py-2 text-gray-700"><%= meeting.description %></td>
+        <td class="px-4 py-2 text-center"><%= meeting.scheduled_at.strftime('%Y-%m-%d %H:%M') %></td>
+        <td class="px-4 py-2 text-center"><%= meeting.deadline_at.strftime('%Y-%m-%d %H:%M') %></td>
+        <td class="px-4 py-2 text-center">
+          <a href="<%= request.script_name %>/org/meetings/<%= meeting.id %>"
+             class="text-blue-600 hover:underline font-semibold">詳細</a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
-<!--
-<p>参照用URL : <%= request.base_url %><%= request.script_name %>/org/<%= current_organization.id %>/<%= current_organization.ical_token %>.ics</p>
--->
+<!-- 出欠ステータス凡例 -->
+<div class="mt-6 flex flex-wrap gap-4 text-sm text-gray-700">
+  <div class="flex items-center gap-2">
+    <div class="w-4 h-4 bg-green-200 border border-green-500 rounded-sm"></div> 出席
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="w-4 h-4 bg-red-200 border border-red-500 rounded-sm"></div> 欠席
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="w-4 h-4 bg-gray-300 border border-gray-500 rounded-sm"></div> 未定
+  </div>
+</div>
 
-<p>
-  公開カレンダーURL :
-  <input type="text" id="ical_url" value="<%= request.base_url %><%= request.script_name %>/org/<%= current_organization.id %>/<%= current_organization.ical_token %>.ics" readonly onclick="copyToClipboard()">
-</p>
+<% if organizer? %>
+  <div class="mt-8">
+    <a href="<%= request.script_name %>/org/meetings/new"
+       class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow">
+      ＋ 新しい予定を作成
+    </a>
+  </div>
+<% end %>
+
+<!-- iCal公開URL -->
+<div class="mt-8">
+  <p class="text-sm text-gray-600">📅 公開カレンダーURL（iCal）:</p>
+  <input type="text" id="ical_url"
+         value="<%= request.base_url %><%= request.script_name %>/org/<%= current_organization.id %>/<%= current_organization.ical_token %>.ics"
+         readonly onclick="copyToClipboard()"
+         class="w-full mt-1 px-3 py-2 border border-gray-300 rounded bg-gray-50 text-sm font-mono">
+</div>
 
 <script>
   function copyToClipboard() {

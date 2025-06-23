@@ -1,30 +1,36 @@
-<nav class="menu <%= @css_display %>">
-  <ul>
-    <% if false && current_user.system_admin? %>
-      <li><a href="<%= request.script_name %>/admin/dashboard">管理画面</a></li>
-      <li><a href="<%= request.script_name %>/orgs">組織一覧</a></li>
+<nav class="bg-blue-600 text-white rounded-lg mb-6">
+  <div class="flex flex-wrap items-center justify-between p-4">
+    <div class="text-lg font-semibold">
+      出欠管理
+    </div>
+    <button class="md:hidden block" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+      <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </button>
+  </div>
 
-    <% elsif org_admin? %>
-      <li><a href="<%= request.script_name %>/">トップ</a></li>
-      <li><a href="<%= request.script_name %>/org/meetings/all">予定管理</a></li>
-      <li><a href="<%= request.script_name %>/org/users">ユーザー管理</a></li>
-      <li><a href="<%= request.script_name %>/org/edit">組織名の編集</a></li>
+  <ul id="mobile-menu" class="md:flex md:space-x-6 md:items-center px-4 pb-4 md:pb-0 hidden md:block">
+    <% if current_user&.system_admin? %>
+      <li><a href="<%= request.script_name %>/admin/dashboard" class="block py-2 hover:underline">管理画面</a></li>
+    <% end %>
+
+    <% if org_admin? %>
+      <li><a href="<%= request.script_name %>/" class="block py-2 hover:underline">トップ</a></li>
+      <li><a href="<%= request.script_name %>/org/meetings/all" class="block py-2 hover:underline">予定管理</a></li>
+      <li><a href="<%= request.script_name %>/org/users" class="block py-2 hover:underline">ユーザー管理</a></li>
+      <li><a href="<%= request.script_name %>/org/edit" class="block py-2 hover:underline">組織名編集</a></li>
 
     <% elsif organizer? %>
-      <li><a href="<%= request.script_name %>/">トップ</a></li>
-      <li><a href="<%= request.script_name %>/org/meetings">予定一覧</a></li>
-      <li><a href="<%= request.script_name %>/org/users">ユーザー一覧</a></li>
-      
-    <% elsif session[:role] == "user" %>
-      <li><a href="<%= request.script_name %>/">トップ</a></li>
-      <li><a href="<%= request.script_name %>/meetings">予定一覧</a></li>
-      <li><a href="<%= request.script_name %>/profile">プロフィール</a></li>
+      <li><a href="<%= request.script_name %>/" class="block py-2 hover:underline">トップ</a></li>
+      <li><a href="<%= request.script_name %>/org/meetings" class="block py-2 hover:underline">予定一覧</a></li>
+      <li><a href="<%= request.script_name %>/org/users" class="block py-2 hover:underline">ユーザー一覧</a></li>
 
-    <% else %>
-      <li><a href="<%= request.script_name %>/">トップ</a></li>
+    <% elsif session[:role] == "user" %>
+      <li><a href="<%= request.script_name %>/" class="block py-2 hover:underline">トップ</a></li>
+      <li><a href="<%= request.script_name %>/profile" class="block py-2 hover:underline">プロフィール</a></li>
     <% end %>
-    
-      <li><a href="<%= request.script_name %>/profile">プロフィール</a></li>
-      <li><a href="<%= request.script_name %>/logout">ログアウト</a></li>
+
+    <!-- 共通項目 -->
+    <li><a href="<%= request.script_name %>/profile" class="block py-2 hover:underline">プロフィール</a></li>
+    <li><a href="<%= request.script_name %>/logout" class="block py-2 hover:underline">ログアウト</a></li>
   </ul>
 </nav>

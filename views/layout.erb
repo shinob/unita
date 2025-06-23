@@ -2,21 +2,56 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title><%= @title || "アプリケーション" %></title>
+  <title><%= @title || "出欠管理アプリ" %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="<%= APP_ROUTE %>/styles.css?1">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Alpine.js for hamburger menu -->
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2563eb',
+            danger: '#dc2626',
+            success: '#16a34a',
+            grayBg: '#f9fafb',
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body>
-  <div class="container">
+
+<body class="bg-gray-50 text-gray-900 min-h-screen">
+  <div class="max-w-6xl mx-auto px-4 py-6">
+
+    <%# グローバルメニュー %>
     <%= erb :menu, layout: false %>
-    <div><%= current_user.name if logged_in? %></div>
-    <div><%= current_organization.name if current_organization %></div>
-    <%= yield %>
-  </div>
-  <div>&nbsp;</div>
-  <div class="container debug">
-    <a href="<%= APP_ROUTE %>/debug_session">デバッグ</a><br />
-    <a href="<%= APP_ROUTE %>/logout">ログアウト</a>
+
+    <%# ユーザー情報表示（任意） %>
+    <% if logged_in? %>
+      <div class="text-sm text-gray-600 mb-4">
+        ようこそ、<strong><%= current_user.name %></strong>
+        <% if current_organization %>
+          （<%= current_organization.name %>）
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# コンテンツ部分 %>
+    <div class="bg-white p-6 rounded-lg shadow">
+      <%= yield %>
+    </div>
+
+    <%# フッター %>
+    <footer class="text-center text-xs text-gray-500 mt-8">
+      <a href="<%= APP_ROUTE %>/debug_session" class="underline mr-2">セッション情報</a>
+      <a href="<%= APP_ROUTE %>/logout" class="underline text-red-400">ログアウト</a>
+    </footer>
+
   </div>
 </body>
 </html>

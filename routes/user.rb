@@ -21,6 +21,8 @@ class UserRoutes < Sinatra::Base
     #require_org_admin!
     @organization = current_organization
     @users = @organization.memberships.map(&:user)
+    #@org_users = @organization.memberships.map(&:user)
+    #@org_users = current_organization.organization_users.includes(:user)
     erb :org_users, layout: :layout
   end
 
