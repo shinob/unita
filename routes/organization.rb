@@ -38,4 +38,26 @@ class OrganizationRoutes < Sinatra::Base
     end
   end
 
+  get '/org/edit' do
+    require_org_admin!
+    @organization = current_organization
+    erb :edit_organization, layout: :layout
+  end
+  
+  post '/org/update' do
+    require_org_admin!
+    @organization = current_organization
+    new_name = params[:name].to_s.strip
+  
+    if new_name.empty?
+      @error = "組織名を入力してください"
+      erb :edit_organization, layout: :layout
+    else
+      @organization.name = new_name
+      @organization.save
+      @message = "組織名を更新しました"
+      erb :edit_organization, layout: :layout
+    end
+  end
+  
 end

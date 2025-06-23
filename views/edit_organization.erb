@@ -1,0 +1,16 @@
+<h1>組織名の編集</h1>
+
+<% if @message %>
+  <div class="alert"><%= @message %></div>
+<% elsif @error %>
+  <div class="alert error"><%= @error %></div>
+<% end %>
+
+<form method="post" action="<%= request.script_name %>/org/update">
+  <label>新しい組織名:
+    <input type="text" name="name" value="<%= @organization.name %>" required>
+  </label><br><br>
+  <button type="submit">更新</button>
+</form>
+
+<p><a href="<%= request.script_name %>/">← トップに戻る</a></p>
