@@ -41,4 +41,20 @@ module AuthHelper
     user.organizations.map(&:id).include?(current_organization&.id)
   end
   
+  def status?(meeting_id)
+    participant = Participant.where(meeting_id: meeting_id, user_id: current_user.id).first
+    unless participant
+      "undecided"
+    else
+      participant.status
+    end
+  end
+  
+  def ical_token
+    unless current_organization.ical_token
+      current_organization.ical_token = SecureRandom.hex(16)
+      current_organization.save
+    end
+    current_organization.ical_token
+  end
 end

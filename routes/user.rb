@@ -68,5 +68,34 @@ class UserRoutes < Sinatra::Base
     membership&.destroy
     redirect to(url('/org/users'))
   end
+
+  get '/profile' do
+    require_login
+    @user = current_user
+    erb :profile, layout: :layout
+  end
+  
+  post '/profile/update' do
+    require_login
+    user = current_user
+  
+    user.set(
+      name: params[:name],
+      email: params[:email],
+      company_name: params[:company_name],
+      department: params[:department],
+      position: params[:position],
+      phone: params[:phone],
+      address: params[:address],
+      notes: params[:notes]
+    )
+  
+    user.password = params[:password] unless params[:password].to_s.strip.empty?
+    user.save
+  
+    @message = "プロフィールを更新しました。"
+    @user = user
+    erb :profile, layout: :layout
+  end
   
 end

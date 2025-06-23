@@ -35,7 +35,31 @@ DB.create_table? :users do
   String :email, unique: true
   String :password_digest
   TrueClass :system_admin, default: false
+  
+  String :phone
+  String :company_name
+  String :department
+  String :position
+  String :adress
+  String :notes
+  DateTime :last_login_at
+  DateTime :created_at
+  DateTime :updated_at
 end
+
+=begin
+DB.alter_table :users do
+  add_column :phone, String
+  add_column :company_name, String
+  add_column :department, String
+  add_column :position, String
+  add_column :address, String
+  add_column :notes, Text
+  add_column :last_login_at, DateTime
+  add_column :created_at, DateTime
+  add_column :updated_at, DateTime
+end
+=end
 
 DB.create_table? :organizations do
   primary_key :id
@@ -96,6 +120,7 @@ use MeetingRoutes
 # --- 認証ヘルパー ---
 helpers do
   
+=begin
   def status?(meeting_id)
     participant = Participant.where(meeting_id: meeting_id, user_id: current_user.id).first
     unless participant
@@ -112,7 +137,7 @@ helpers do
     end
     current_organization.ical_token
   end
-  
+=end  
 end
 
 before do
@@ -195,6 +220,18 @@ get '/org/:id/:token.ics' do
   cal = Icalendar::Calendar.new
   meetings.each do |m|
     cal.event do |e|
+      e.dtstart     = Icalendar::Values::DateTime.new(m.scheduled_at, 'tzid' => 'Asia/Tokyo')
+      e.dtend       = Icalendar::Values::DateTime.new(m.ended_at, 'tzid' => 'Asia/Tokyo') if m.ended_at
+      e.summary     = m.title
+      e.description = m.description
+      e.created     = Icalendar::Values::DateTime.new(m.created_at, 'tzid' => 'Asia/Tokyo') if m.respond_to?(:created_at)
+    end
+  end
+
+=begin
+  cal = Icalendar::Calendar.new
+  meetings.each do |m|
+    cal.event do |e|
       e.dtstart     = Icalendar::Values::DateTime.new(m.scheduled_at.utc)
       e.dtend       = Icalendar::Values::DateTime.new(m.ended_at.utc) if m.ended_at
       e.summary     = m.title
@@ -202,6 +239,7 @@ get '/org/:id/:token.ics' do
       e.created     = m.created_at if m.respond_to?(:created_at)
     end
   end
+=end
 
   content_type 'text/calendar'
   cal.to_ical

@@ -1,7 +1,7 @@
 <!-- views/new_meeting.erb -->
   <h1>行事の新規作成</h1>
 
-  <form action="/schedule/org/meetings/create" method="post">
+  <form action="<%= APP_ROUTE %>/org/meetings/create" method="post">
     <div>
       <label for="title">タイトル:</label><br>
       <input type="text" name="title" id="title" required>
@@ -32,4 +32,4 @@
     </div>
   </form>
 
-  <p><a href="/schedule/org/meetings">← 行事一覧に戻る</a></p>
+  <p><a href="<%= APP_ROUTE %>/org/meetings">← 行事一覧に戻る</a></p>

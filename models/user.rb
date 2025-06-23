@@ -2,6 +2,7 @@
 #require 'bcrypt'
 
 #DB = Sequel.sqlite('db/attendance.db')
+Sequel::Model.plugin :timestamps
 
 class User < Sequel::Model
   one_to_many :memberships

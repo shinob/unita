@@ -24,7 +24,9 @@ class MeetingRoutes < Sinatra::Base
   get '/org/meetings' do
     redirect to(url('/login')) unless logged_in?
     halt(403, 'Access denied') unless current_organization
-
+    
+    ical_token
+    
     cutoff_time = Time.now - (7 * 24 * 60 * 60)
     @meetings = Meeting.where(organization_id: current_organization.id)
                        .where { scheduled_at > cutoff_time }
@@ -37,6 +39,9 @@ class MeetingRoutes < Sinatra::Base
   get '/org/meetings/all' do
     redirect to(url('/login')) unless logged_in?
     halt(403, 'Access denied') unless current_organization
+    
+    ical_token
+        
     @meetings = Meeting.where(organization_id: current_organization.id).order(:scheduled_at).all
     erb :meetings_list, layout: :layout
   end

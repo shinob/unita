@@ -1,0 +1,47 @@
+<h1>プロフィール編集</h1>
+
+<% if @message %>
+  <div class="alert"><%= @message %></div>
+<% end %>
+
+<form action="<%= request.script_name %>/profile/update" method="post" class="profile-form">
+  <label>氏名:
+    <input type="text" name="name" value="<%= @user.name %>" required>
+  </label>
+
+  <label>メールアドレス:
+    <input type="email" name="email" value="<%= @user.email %>" required>
+  </label>
+
+  <label>パスワード（変更する場合のみ入力）:
+    <input type="password" name="password" placeholder="新しいパスワード">
+  </label>
+
+  <label>会社名:
+    <input type="text" name="company_name" value="<%= @user.company_name %>">
+  </label>
+
+  <label>部署:
+    <input type="text" name="department" value="<%= @user.department %>">
+  </label>
+
+  <label>役職:
+    <input type="text" name="position" value="<%= @user.position %>">
+  </label>
+
+  <label>電話番号:
+    <input type="text" name="phone" value="<%= @user.phone %>">
+  </label>
+
+  <label>住所:
+    <input type="text" name="address" value="<%= @user.address %>">
+  </label>
+
+  <label>備考:
+    <textarea name="notes" rows="4"><%= @user.notes %></textarea>
+  </label>
+
+  <button type="submit">更新する</button>
+</form>
+
+<p><a href="<%= request.script_name %>/">← トップに戻る</a></p>
