@@ -5,6 +5,7 @@ require_relative '../models/user'
 require_relative '../helpers/auth_helper'
 
 class AdminRoutes < Sinatra::Base
+  
   use Rack::Session::Cookie,
       key: COOKIE_KEY,
       path: '/',

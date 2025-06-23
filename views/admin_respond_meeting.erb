@@ -1,0 +1,38 @@
+<h1><%= @meeting.title %> - 出欠管理（管理者用）</h1>
+<p><strong>開催日時:</strong> <%= @meeting.scheduled_at.strftime('%Y-%m-%d %H:%M') %></p>
+<p><strong>締切日時:</strong> <%= @meeting.deadline_at&.strftime('%Y-%m-%d %H:%M') || 'なし' %></p>
+
+<form action="<%= request.script_name %>/org/meetings/<%= @meeting.id %>/respond_admin" method="post">
+  <table>
+    <thead>
+      <tr>
+        <th>名前</th>
+        <th>出欠</th>
+        <th>コメント</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @members.each do |user| %>
+        <% participant = @participants.find { |p| p.user_id == user.id } %>
+        <tr class="<%= participant&.status || 'undecided' %>">
+          <td><%= user.name %></td>
+          <td>
+            <select name="responses[<%= user.id %>][status]">
+              <option value="attending" <%= 'selected' if participant&.status == 'attending' %>>出席</option>
+              <option value="absent" <%= 'selected' if participant&.status == 'absent' %>>欠席</option>
+              <option value="undecided" <%= 'selected' if participant&.status == 'undecided' || participant.nil? %>>未定</option>
+            </select>
+          </td>
+          <td>
+            <input type="text" name="responses[<%= user.id %>][comment]" value="<%= participant&.comment %>" style="width: 95%;">
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 20px;">
+    <button type="submit">保存する</button>
+    <a href="<%= request.script_name %>/org/meetings/<%= @meeting.id %>" style="margin-left: 10px;">戻る</a>
+  </div>
+</form>

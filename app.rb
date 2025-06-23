@@ -14,8 +14,8 @@ require_relative './config/setting'
 
 set :bind, '0.0.0.0'
 set :port, APP_PORT
-#set :public_folder, 'schedule/public'
-set :public_folder, File.expand_path('public', __dir__)
+#set :public_folder, File.expand_path('public', __dir__)
+set :public_folder, 'public'
 set :views, 'views'
 
 use Rack::Session::Cookie,
