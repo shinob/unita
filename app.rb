@@ -90,6 +90,8 @@ use OrganizationRoutes
 require_relative './routes/user'
 use UserRoutes
 
+require_relative './routes/meeting'
+use MeetingRoutes
 
 # --- 認証ヘルパー ---
 helpers do
@@ -262,6 +264,7 @@ end
 =end
 
 # --- 会議一覧表示 ---
+=begin
 get '/org/meetings' do
   redirect to(url('/login')) unless logged_in?
   
@@ -426,3 +429,4 @@ post '/org/meetings/:id/respond_admin' do
 
   redirect to(url("/org/meetings/#{@meeting.id}"))
 end
+=end

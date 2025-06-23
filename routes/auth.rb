@@ -75,4 +75,42 @@ EOF
     redirect to(url('/login'))
   end
   
+  get '/signup' do
+    @css_display = "display_none"
+    erb :signup, layout: :layout
+  end
+  
+  post '/signup' do
+    name = params[:name]
+    email = params[:email]
+    password = params[:password]
+    organization_name = params[:organization_name]
+  
+    if [name, email, password, organization_name].any?(&:empty?)
+      @error = "すべての項目を入力してください"
+      erb :signup, layout: :layout
+    elsif User.first(email: email)
+      @error = "そのメールアドレスは既に登録されています"
+      erb :signup, layout: :layout
+    else
+      # ユーザー作成
+      user = User.new(name: name, email: email)
+      user.password = password
+      user.save
+  
+      # 組織作成（重複チェックも可）
+      organization = Organization.create(name: organization_name)
+  
+      # membership登録（org_adminとして）
+      Membership.create(user_id: user.id, organization_id: organization.id, role: 'org_admin')
+  
+      # セッション登録
+      session[:user_id] = user.id
+      session[:organization_id] = organization.id
+      session[:role] = 'org_admin'
+  
+      redirect to(url('/org/meetings'))
+    end
+  end
+
 end

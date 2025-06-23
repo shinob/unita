@@ -1,0 +1,29 @@
+<% @title = "ユーザー登録" %>
+
+<h1 class="page-title"><%= @title %></h1>
+
+<% if @error %>
+  <div class="alert error"><%= @error %></div>
+<% end %>
+
+<form action="<%= APP_ROUTE %>/signup" method="post" class="form-card">
+  <label>名前:<br>
+    <input type="text" name="name" required>
+  </label>
+
+  <label>メールアドレス:<br>
+    <input type="email" name="email" required>
+  </label>
+
+  <label>パスワード:<br>
+    <input type="password" name="password" required>
+  </label>
+
+  <label>新しい組織名:<br>
+    <input type="text" name="organization_name" required>
+  </label>
+
+  <input type="submit" value="登録して開始" class="btn">
+</form>
+
+<p><a href="<%= APP_ROUTE %>/login">← ログイン画面へ</a></p>
