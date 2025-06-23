@@ -28,10 +28,15 @@ class MeetingRoutes < Sinatra::Base
     ical_token
     
     cutoff_time = Time.now - (7 * 24 * 60 * 60)
+    #@meetings = Meeting.where(organization_id: current_organization.id)
+    #                   .where { scheduled_at > cutoff_time }
+    #                   .order(:scheduled_at)
+    #                   .all
     @meetings = Meeting.where(organization_id: current_organization.id)
-                       .where { scheduled_at > cutoff_time }
-                       .order(:scheduled_at)
-                       .all
+                        .enabled
+                        .where { scheduled_at > cutoff_time }
+                        .order(:scheduled_at)
+                        .all
 
     erb :meetings_list, layout: :layout
   end
@@ -42,7 +47,11 @@ class MeetingRoutes < Sinatra::Base
     
     ical_token
         
-    @meetings = Meeting.where(organization_id: current_organization.id).order(:scheduled_at).all
+    @meetings = Meeting.where(organization_id: current_organization.id)
+      .enabled
+      .order(:scheduled_at)
+      .all
+      
     erb :meetings_list, layout: :layout
   end
 
@@ -161,4 +170,13 @@ class MeetingRoutes < Sinatra::Base
 
     redirect to(url("/org/meetings/#{@meeting.id}"))
   end
+  
+  post '/org/meetings/:id/disable' do
+    require_organizer!
+    meeting = Meeting[params[:id]]
+    halt(403, 'Access denied') unless meeting.organization_id == current_organization.id
+    meeting.update(disabled: true)
+    redirect to(url('/org/meetings'))
+  end
+  
 end

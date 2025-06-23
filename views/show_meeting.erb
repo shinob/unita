@@ -12,6 +12,12 @@
   <a href="<%= request.script_name %>/org/meetings/<%= @meeting.id %>/edit">[編集]</a>
 <% end %>
 
+<% if organizer? %>
+  <form method="post" action="<%= request.script_name %>/org/meetings/<%= @meeting.id %>/disable" onsubmit="return confirm('この会議を無効化しますか？');">
+    <button type="submit">この会議を無効化</button>
+  </form>
+<% end %>
+
 <h2>出欠登録</h2>
 <% if @participant %>
   <form action="/schedule/org/meetings/<%= @meeting.id %>/respond" method="post">

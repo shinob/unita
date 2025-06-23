@@ -47,20 +47,6 @@ DB.create_table? :users do
   DateTime :updated_at
 end
 
-=begin
-DB.alter_table :users do
-  add_column :phone, String
-  add_column :company_name, String
-  add_column :department, String
-  add_column :position, String
-  add_column :address, String
-  add_column :notes, Text
-  add_column :last_login_at, DateTime
-  add_column :created_at, DateTime
-  add_column :updated_at, DateTime
-end
-=end
-
 DB.create_table? :organizations do
   primary_key :id
   String :name
@@ -83,6 +69,7 @@ DB.create_table? :meetings do
   DateTime :scheduled_at
   DateTime :ended_at
   DateTime :deadline_at
+  TrueClass :disabled, default: false
 end
 
 DB.create_table? :participants do
@@ -116,6 +103,9 @@ use UserRoutes
 
 require_relative './routes/meeting'
 use MeetingRoutes
+
+require_relative './routes/admin'
+use AdminRoutes
 
 # --- 認証ヘルパー ---
 helpers do
@@ -160,10 +150,12 @@ end
 # --- ルーティング ---
 
 get '/' do
-  #test_form()
-  
   if current_user
-    redirect to(url('/org/meetings'))
+    if current_user.system_admin?
+      redirect to(url('/admin/dashboard'))
+    else
+      redirect to(url('/org/meetings'))
+    end
   else
     redirect to(url('/login'))
   end
@@ -203,9 +195,11 @@ get '/dashboard' do
   "ダッシュボード"
 end
 
+=begin
 get '/admin' do
   "管理者メニュー"
 end
+=end
 
 # --- iCal出力 ---
 get '/org/:id/:token.ics' do

@@ -1,0 +1,82 @@
+<h1>管理者ダッシュボード</h1>
+
+<h2>📊 システムサマリー</h2>
+<ul>
+  <li>登録組織数：<%= @organizations.count %></li>
+  <li>ユーザー数：<%= @user_count %></li>
+  <li>会議数：<%= @meeting_count %></li>
+</ul>
+
+<hr>
+
+<h2>🏢 組織一覧</h2>
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>組織名</th>
+      <th>ユーザー数</th>
+      <th>会議数</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @organizations.each do |org| %>
+      <tr>
+        <td><%= org.id %></td>
+        <td><%= org.name %></td>
+        <td><%= org.memberships.count %></td>
+        <td><%= org.meetings.count %></td>
+        <td>
+          <form action="/admin/orgs/<%= org.id %>/delete" method="post" onsubmit="return confirm('本当に削除しますか？');">
+            <button type="submit">削除</button>
+          </form>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>➕ 新しい組織を作成</h3>
+<form action="/admin/orgs/create" method="post">
+  <input type="text" name="org_name" placeholder="組織名を入力" required>
+  <button type="submit">作成</button>
+</form>
+
+<hr>
+
+<h2>👥 ユーザー検索</h2>
+<form action="/admin/users/search" method="get">
+  <input type="text" name="query" placeholder="名前またはメールアドレス">
+  <button type="submit">検索</button>
+</form>
+
+<% if @search_results && !@search_results.empty? %>
+  <h3>検索結果</h3>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>名前</th>
+        <th>メール</th>
+        <th>所属組織（ロール）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @search_results.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td>
+            <% user.memberships.each do |m| %>
+              <div><%= m.organization.name %>（<%= m.role %>）</div>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% elsif @search_results %>
+  <p>該当するユーザーが見つかりませんでした。</p>
+<% end %>

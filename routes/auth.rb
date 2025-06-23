@@ -51,7 +51,7 @@ EOF
       #debug
       
       if user.system_admin?
-        redirect to(url('/admin'))
+        redirect to(url('/admin/dashboard'))
       end
       
       # 組織が1つしかない場合は自動選択
