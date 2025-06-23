@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title><%= @title || "アプリケーション" %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="<%= APP_ROUTE %>/styles.css">
+</head>
+<body>
+  <div class="container">
+    <%= erb :menu, layout: false %>
+    <div><%= current_user.name if logged_in? %></div>
+    <div><%= current_organization.name if current_organization %></div>
+    <%= yield %>
+  </div>
+  <div>&nbsp;</div>
+  <div class="container debug">
+    <a href="<%= APP_ROUTE %>/debug_session">デバッグ</a><br />
+    <a href="<%= APP_ROUTE %>/logout">ログアウト</a>
+  </div>
+</body>
+</html>

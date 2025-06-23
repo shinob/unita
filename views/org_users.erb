@@ -1,0 +1,78 @@
+<h1>組織ユーザー管理</h1>
+
+<h2>ユーザー一覧</h2>
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>名前</th>
+      <th>メール</th>
+      <th>ロール</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @organization.memberships.each do |membership| %>
+      <tr>
+        <td><%= membership.user.id %></td>
+        <td><%= membership.user.name %></td>
+        <td><%= membership.user.email %></td>
+        <td><%= membership.role %></td>
+        <td>
+          <% if org_admin? %>
+          <a href="<%= request.script_name %>/org/users/<%= membership.user.id %>/edit">編集</a>
+          <form action="<%= request.script_name %>/org/users/<%= membership.user.id %>/delete" method="post" style="display:inline" onsubmit="return confirm('本当に削除しますか？');">
+            <button type="submit">削除</button>
+          </form>
+          <% else %>
+          &nbsp;
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if org_admin? %>
+<hr>
+
+  <h2>新規ユーザー追加</h2>
+  <form action="<%= request.script_name %>/org/users/create" method="post">
+    <div>
+      <label>名前:</label>
+      <input type="text" name="name" required>
+    </div>
+    <div>
+      <label>メールアドレス:</label>
+      <input type="email" name="email" required>
+    </div>
+    <div>
+      <label>パスワード:</label>
+      <input type="password" name="password" required>
+    </div>
+    <div>&nbsp;</div>
+    <div>
+      <label class="selectbox-2">ロール:
+        <select name="role" required>
+          <option value="org_admin">組織管理者</option>
+          <option value="organizer">会議運営者</option>
+          <option value="user">参加者</option>
+        </select>
+      </label>
+    </div>
+    <div>&nbsp;</div>
+      
+    <!--
+    <div>
+      <label>ロール:</label>
+      <select name="role" required>
+        <option value="org_admin">組織管理者</option>
+        <option value="organizer">会議運営者</option>
+      </select>
+    </div>
+    -->
+    <div>
+      <button type="submit">追加</button>
+    </div>
+  </form>
+<% end %>

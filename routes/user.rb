@@ -1,0 +1,72 @@
+# routes/user.rb
+require 'sinatra/base'
+
+require_relative '../config/setting'
+require_relative '../models/user'
+require_relative '../helpers/auth_helper'
+
+class UserRoutes < Sinatra::Base
+  #enable :sessions
+  use Rack::Session::Cookie,
+    key: COOKIE_KEY,
+    path: '/',
+    secret: COOKIE_SERCRET,
+    expire_after: COOKIE_EXPIRE,
+    same_site: :lax
+
+  helpers AuthHelper
+  set :views, File.expand_path('../../views', __FILE__)
+  
+  get '/org/users' do
+    #require_org_admin!
+    @organization = current_organization
+    @users = @organization.memberships.map(&:user)
+    erb :org_users, layout: :layout
+  end
+
+  post '/org/users/create' do
+    require_org_admin!
+    user = User.first(email: params[:email]) || User.new(name: params[:name], email: params[:email])
+    user.password = params[:password] if user.new?
+    user.save
+  
+    unless Membership.where(user_id: user.id, organization_id: current_organization.id).first
+      Membership.create(user_id: user.id, organization_id: current_organization.id, role: params[:role])
+    end
+  
+    redirect to(url('/org/users'))
+  end
+  
+  get '/org/users/:id/edit' do
+    require_org_admin!
+    @user = User[params[:id]]
+    @membership = Membership.where(user_id: @user.id, organization_id: current_organization.id).first
+    halt(403, 'Access denied') unless @membership
+    erb :edit_org_user, layout: :layout
+  end
+  
+  post '/org/users/:id/update' do
+    require_org_admin!
+    user = User[params[:id]]
+    membership = Membership.where(user_id: user.id, organization_id: current_organization.id).first
+    halt(403, 'Access denied') unless membership
+  
+    user.name = params[:name]
+    user.email = params[:email]
+    user.password = params[:password] unless params[:password].empty?
+    user.save
+  
+    membership.role = params[:role]
+    membership.save
+  
+    redirect to(url('/org/users'))
+  end
+  
+  post '/org/users/:id/delete' do
+    require_org_admin!
+    membership = Membership.where(user_id: params[:id], organization_id: current_organization.id).first
+    membership&.destroy
+    redirect to(url('/org/users'))
+  end
+  
+end

@@ -1,0 +1,37 @@
+<h1>ユーザー編集</h1>
+
+<form action="<%= request.script_name %>/org/users/<%= @user.id %>/update" method="post">
+  <div>
+    <label>名前:</label>
+    <input type="text" name="name" value="<%= @user.name %>" required>
+  </div>
+
+  <div>
+    <label>メールアドレス:</label>
+    <input type="email" name="email" value="<%= @user.email %>" required>
+  </div>
+
+  <div>
+    <label>パスワード（変更する場合のみ入力）:</label>
+    <input type="password" name="password" placeholder="新しいパスワード">
+  </div>
+
+  <div>&nbsp;</div>
+
+  <div>
+    <label class="selectbox-2">ロール:
+      <select name="role" required>
+        <option value="org_admin" <%= 'selected' if @membership.role == 'org_admin' %>>組織管理者</option>
+        <option value="organizer" <%= 'selected' if @membership.role == 'organizer' %>>会議運営者</option>
+        <option value="user" <%= 'selected' if @membership.role == 'user' %>>参加者</option>
+      </select>
+    </label>
+  </div>
+
+  <div>&nbsp;</div>
+  
+  <div style="margin-top: 10px;">
+    <button type="submit">更新</button>
+    <a href="<%= request.script_name %>/org/users" style="margin-left: 10px;">キャンセル</a>
+  </div>
+</form>

@@ -1,0 +1,65 @@
+<% @title = "予定一覧" %>
+<% ical_token %>
+  <h1>予定一覧</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>タイトル</th>
+        <th>説明</th>
+        <th>開催日時</th>
+        <th>締切日時</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @meetings.each do |meeting| %>
+        <tr class="<%= status?(meeting.id) %>">
+          <td><%= meeting.title %></td>
+          <td><%= meeting.description %></td>
+          <td class="algin_center"><%= meeting.scheduled_at.strftime('%Y-%m-%d %H:%M') %></td>
+          <td class="algin_center"><%= meeting.deadline_at.strftime('%Y-%m-%d %H:%M') %></td>
+          <td>
+            <a href="<%= request.script_name %>/org/meetings/<%= meeting.id %>">詳細</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  
+  <table class="noborder">
+    <tr>
+      <td class="noborder">
+        <table class="box"><tbody><tr class="attending"><td>&nbsp;</td></tr></tbody></table>：出席
+      </td>
+      <td class="noborder">
+        <table class="box"><tbody><tr class="absent"><td>&nbsp;</td></tr></tbody></table>：欠席
+      </td>
+      <td class="noborder">
+        <table class="box"><tbody><tr class="undecided"><td>&nbsp;</td></tr></tbody></table>：未定
+      </td>
+    </tr>
+  </table>
+  
+  <% if organizer? %>
+  <p><a href="<%= request.script_name %>/org/meetings/new">＋ 新しい予定を作成</a></p>
+  <% end %>
+
+<!--
+<p>参照用URL : <%= request.base_url %><%= request.script_name %>/org/<%= current_organization.id %>/<%= current_organization.ical_token %>.ics</p>
+-->
+
+<p>
+  公開カレンダーURL :
+  <input type="text" id="ical_url" value="<%= request.base_url %><%= request.script_name %>/org/<%= current_organization.id %>/<%= current_organization.ical_token %>.ics" readonly onclick="copyToClipboard()">
+</p>
+
+<script>
+  function copyToClipboard() {
+    const input = document.getElementById("ical_url");
+    input.select();
+    input.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("URLをコピーしました");
+  }
+</script>

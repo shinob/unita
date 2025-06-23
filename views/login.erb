@@ -1,0 +1,19 @@
+<% @title = "出欠管理" %>
+
+<h1 class="page-title"><%= @title %></h1>
+
+<% if @error %>
+  <div class="alert error"><%= @error %></div>
+<% end %>
+
+<form action="<%= APP_ROUTE %>/login" method="post" class="form-card">
+  <label>Email:<br />
+    <input type="email" name="email" required>
+  </label>
+
+  <label>Password:<br />
+    <input type="password" name="password" required>
+  </label>
+
+  <input type="submit" value="ログイン" class="btn">
+</form>

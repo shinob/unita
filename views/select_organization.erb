@@ -1,0 +1,9 @@
+  <h1>組織を選択してください</h1>
+  <form method="post" action="<%= APP_ROUTE %>/select_organization">
+    <select name="organization_id">
+      <% @organizations.each do |org| %>
+        <option value="<%= org.id %>"><%= org.name %></option>
+      <% end %>
+    </select>
+    <input type="submit" value="選択">
+  </form>

@@ -1,0 +1,31 @@
+<nav class="menu <%= @css_display %>">
+  <ul>
+    <% if false && current_user.system_admin? %>
+      <li><a href="<%= request.script_name %>/admin/dashboard">管理画面</a></li>
+      <li><a href="<%= request.script_name %>/orgs">組織一覧</a></li>
+      <li><a href="<%= request.script_name %>/logout">ログアウト</a></li>
+
+    <% elsif org_admin? %>
+      <li><a href="<%= request.script_name %>/">トップ</a></li>
+      <li><a href="<%= request.script_name %>/org/meetings/all">予定管理</a></li>
+      <li><a href="<%= request.script_name %>/org/users">ユーザー管理</a></li>
+      <li><a href="<%= request.script_name %>/logout">ログアウト</a></li>
+
+    <% elsif organizer? %>
+      <li><a href="<%= request.script_name %>/">トップ</a></li>
+      <li><a href="<%= request.script_name %>/org/meetings">予定一覧</a></li>
+      <li><a href="<%= request.script_name %>/org/users">ユーザー一覧</a></li>
+      <li><a href="<%= request.script_name %>/logout">ログアウト</a></li>
+      
+    <% elsif session[:role] == "user" %>
+      <li><a href="<%= request.script_name %>/">トップ</a></li>
+      <li><a href="<%= request.script_name %>/meetings">予定一覧</a></li>
+      <li><a href="<%= request.script_name %>/profile">プロフィール</a></li>
+      <li><a href="<%= request.script_name %>/logout">ログアウト</a></li>
+
+    <% else %>
+      <li><a href="<%= request.script_name %>/">トップ</a></li>
+      <li><a href="<%= request.script_name %>/logout">ログアウト</a></li>
+    <% end %>
+  </ul>
+</nav>

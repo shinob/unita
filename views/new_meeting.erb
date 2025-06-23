@@ -1,0 +1,35 @@
+<!-- views/new_meeting.erb -->
+  <h1>行事の新規作成</h1>
+
+  <form action="/schedule/org/meetings/create" method="post">
+    <div>
+      <label for="title">タイトル:</label><br>
+      <input type="text" name="title" id="title" required>
+    </div>
+
+    <div>
+      <label for="description">詳細:</label><br>
+      <textarea name="description" id="description" rows="4" cols="50"></textarea>
+    </div>
+
+    <div>
+      <label for="scheduled_at">開催日時 (YYYY-MM-DD HH:MM):</label><br>
+      <input type="datetime-local" name="scheduled_at" id="scheduled_at" required>
+    </div>
+    
+    <div>
+      <label for="ended_at">終了日時 (YYYY-MM-DD HH:MM):</label><br>
+      <input type="datetime-local" name="ended_at" id="ended_at" required>
+    </div>
+    
+    <div>
+      <label for="deadline_at">出欠締切日時 (YYYY-MM-DD HH:MM):</label><br>
+      <input type="datetime-local" name="deadline_at" id="deadline_at" required>
+    </div>
+
+    <div>
+      <button type="submit">作成する</button>
+    </div>
+  </form>
+
+  <p><a href="/schedule/org/meetings">← 行事一覧に戻る</a></p>
