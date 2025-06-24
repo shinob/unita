@@ -60,3 +60,4 @@ class OrganizationRoutes < Sinatra::Base
     end
   end
   
+end

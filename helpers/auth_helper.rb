@@ -74,3 +74,4 @@ module AuthHelper
     current_organization.ical_token
   end
 
+end

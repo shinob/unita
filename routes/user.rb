@@ -101,3 +101,4 @@ class UserRoutes < Sinatra::Base
     erb :profile, layout: :layout
   end
   
+end

@@ -40,7 +40,7 @@ DB.create_table? :users do
   String :company_name
   String :department
   String :position
-  String :adress
+  String :address
   String :notes
   DateTime :last_login_at
   DateTime :created_at
@@ -147,6 +147,10 @@ end
 
 post '/' do
   #test_form()
+end
+
+get '/unita/' do
+  "Hello from /unita/"
 end
 
 get '/debug_session' do

@@ -31,7 +31,7 @@
           <td class="p-2 text-center"><%= org.memberships.count %></td>
           <td class="p-2 text-center"><%= org.meetings.count %></td>
           <td class="p-2">
-            <form action="/admin/orgs/<%= org.id %>/delete" method="post"
+            <form action="<%= request.script_name %>/admin/orgs/<%= org.id %>/delete" method="post"
                   onsubmit="return confirm('本当に削除しますか？');">
               <button type="submit"
                       class="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm">
@@ -47,7 +47,7 @@
   <!-- 新規組織追加 -->
   <div class="mt-6">
     <h3 class="text-md font-medium mb-2">➕ 新しい組織を作成</h3>
-    <form action="/admin/orgs/create" method="post" class="flex gap-2">
+    <form action="<%= request.script_name %>/admin/orgs/create" method="post" class="flex gap-2">
       <input type="text" name="org_name" placeholder="組織名を入力" required
              class="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200">
       <button type="submit"
@@ -61,7 +61,7 @@
 <!-- ユーザー検索 -->
 <section>
   <h2 class="text-xl font-semibold text-gray-700 mb-4">👥 ユーザー検索</h2>
-  <form action="/admin/users/search" method="get" class="flex gap-2 mb-4">
+  <form action="<%= request.script_name %>/admin/users/search" method="get" class="flex gap-2 mb-4">
     <input type="text" name="query" placeholder="名前またはメールアドレス"
            class="flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-200">
     <button type="submit"
