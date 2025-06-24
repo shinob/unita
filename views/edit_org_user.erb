@@ -25,9 +25,9 @@
       <label class="block text-sm font-medium text-gray-700">ロール</label>
       <select name="role" required
               class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
-        <option value="org_admin" <%= 'selected' if @membership.role == 'org_admin' %>>組織管理者</option>
-        <option value="organizer" <%= 'selected' if @membership.role == 'organizer' %>>運営者</option>
         <option value="user" <%= 'selected' if @membership.role == 'user' %>>参加者</option>
+        <option value="organizer" <%= 'selected' if @membership.role == 'organizer' %>>運営者</option>
+        <option value="org_admin" <%= 'selected' if @membership.role == 'org_admin' %>>管理者</option>
       </select>
     </div>
 

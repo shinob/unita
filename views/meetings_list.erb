@@ -1,35 +1,38 @@
 <h1 class="text-2xl font-bold text-gray-800 mb-6">予定一覧</h1>
 
-<table class="w-full table-auto border border-gray-300 shadow-sm rounded-lg overflow-hidden bg-white">
-  <thead class="bg-blue-600 text-white">
-    <tr>
-      <th class="px-4 py-2">タイトル</th>
-      <th class="px-4 py-2">説明</th>
-      <th class="px-4 py-2 text-center">開催日時</th>
-      <th class="px-4 py-2 text-center">締切日時</th>
-      <th class="px-4 py-2 text-center">操作</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @meetings.each do |meeting| %>
-      <% status_class = case status?(meeting.id)
-        when 'attending' then 'bg-green-50'
-        when 'absent' then 'bg-red-50'
-        else 'bg-gray-100'
-      end %>
-      <tr class="border-t <%= status_class %> hover:bg-yellow-50 transition">
-        <td class="px-4 py-2 font-medium text-gray-900"><%= meeting.title %></td>
-        <td class="px-4 py-2 text-gray-700"><%= meeting.description %></td>
-        <td class="px-4 py-2 text-center"><%= meeting.scheduled_at.strftime('%Y-%m-%d %H:%M') %></td>
-        <td class="px-4 py-2 text-center"><%= meeting.deadline_at.strftime('%Y-%m-%d %H:%M') %></td>
-        <td class="px-4 py-2 text-center">
-          <a href="<%= request.script_name %>/org/meetings/<%= meeting.id %>"
-             class="text-blue-600 hover:underline font-semibold">詳細</a>
-        </td>
+<!-- 予定一覧テーブル（レスポンシブ対応） -->
+<div class="overflow-x-auto w-full">
+  <table class="min-w-[600px] w-full table-auto border border-gray-300 shadow-sm rounded-lg bg-white">
+    <thead class="bg-blue-600 text-white">
+      <tr>
+        <th class="px-4 py-2">タイトル</th>
+        <th class="px-4 py-2">説明</th>
+        <th class="px-4 py-2 text-center">開催日時</th>
+        <th class="px-4 py-2 text-center">締切日時</th>
+        <th class="px-4 py-2 text-center">操作</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @meetings.each do |meeting| %>
+        <% status_class = case status?(meeting.id)
+          when 'attending' then 'bg-green-50'
+          when 'absent' then 'bg-red-50'
+          else 'bg-gray-100'
+        end %>
+        <tr class="border-t <%= status_class %> hover:bg-yellow-50 transition">
+          <td class="px-4 py-2 font-medium text-gray-900"><%= meeting.title %></td>
+          <td class="px-4 py-2 text-gray-700"><%= meeting.description %></td>
+          <td class="px-4 py-2 text-center"><%= meeting.scheduled_at.strftime('%Y-%m-%d %H:%M') %></td>
+          <td class="px-4 py-2 text-center"><%= meeting.deadline_at.strftime('%Y-%m-%d %H:%M') %></td>
+          <td class="px-4 py-2 text-center">
+            <a href="<%= request.script_name %>/org/meetings/<%= meeting.id %>"
+               class="text-blue-600 hover:underline font-semibold">詳細</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
 <!-- 出欠ステータス凡例 -->
 <div class="mt-6 flex flex-wrap gap-4 text-sm text-gray-700">
