@@ -18,19 +18,24 @@
       <li><a href="<%= request.script_name %>/org/meetings/all" class="block py-2 hover:underline">予定管理</a></li>
       <li><a href="<%= request.script_name %>/org/users" class="block py-2 hover:underline">ユーザー管理</a></li>
       <li><a href="<%= request.script_name %>/org/edit" class="block py-2 hover:underline">組織名編集</a></li>
+    <li><a href="<%= request.script_name %>/profile" class="block py-2 hover:underline">プロフィール</a></li>
 
     <% elsif organizer? %>
       <li><a href="<%= request.script_name %>/" class="block py-2 hover:underline">トップ</a></li>
       <li><a href="<%= request.script_name %>/org/meetings" class="block py-2 hover:underline">予定一覧</a></li>
       <li><a href="<%= request.script_name %>/org/users" class="block py-2 hover:underline">ユーザー一覧</a></li>
+      <li><a href="<%= request.script_name %>/profile" class="block py-2 hover:underline">プロフィール</a></li>
 
-    <% elsif session[:role] == "user" %>
+    <% elsif user? %>
       <li><a href="<%= request.script_name %>/" class="block py-2 hover:underline">トップ</a></li>
+      <li><a href="<%= request.script_name %>/org/users" class="block py-2 hover:underline">ユーザー一覧</a></li>
       <li><a href="<%= request.script_name %>/profile" class="block py-2 hover:underline">プロフィール</a></li>
     <% end %>
 
     <!-- 共通項目 -->
-    <li><a href="<%= request.script_name %>/profile" class="block py-2 hover:underline">プロフィール</a></li>
+    <!--
+    <li><a href="<%= request.script_name %>/" class="block py-2 hover:underline">トップ</a></li>
     <li><a href="<%= request.script_name %>/logout" class="block py-2 hover:underline">ログアウト</a></li>
+    -->
   </ul>
 </nav>

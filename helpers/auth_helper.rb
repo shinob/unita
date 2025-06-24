@@ -25,6 +25,14 @@ module AuthHelper
     current_user&.roles_for(current_organization&.id)&.include?('organizer')
   end
   
+  def user?
+    if logged_in?
+      !current_user&.system_admin? && !org_admin? && !organizer?
+    else
+      false
+    end
+  end
+  
   def current_organization
     @current_organization ||= Organization[session[:organization_id]] if session[:organization_id]
   end
@@ -50,6 +58,14 @@ module AuthHelper
     end
   end
   
+  def role_label(role)
+    case role
+    when 'org_admin' then '管理者'
+    when 'organizer' then '運営者'
+    else '参加者'
+    end
+  end
+  
   def ical_token
     unless current_organization.ical_token
       current_organization.ical_token = SecureRandom.hex(16)
@@ -57,4 +73,4 @@ module AuthHelper
     end
     current_organization.ical_token
   end
-end
+

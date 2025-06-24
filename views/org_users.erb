@@ -8,7 +8,9 @@
       <tr class="bg-gray-200 text-gray-700">
         <th class="px-4 py-2 text-left">ID</th>
         <th class="px-4 py-2 text-left">名前</th>
+        <!--
         <th class="px-4 py-2 text-left">メール</th>
+        -->
         <th class="px-4 py-2 text-left">ロール</th>
         <th class="px-4 py-2 text-left">操作</th>
       </tr>
@@ -17,9 +19,11 @@
       <% @organization.memberships.each do |membership| %>
         <tr class="border-t hover:bg-gray-50">
           <td class="px-4 py-2"><%= membership.user.id %></td>
-          <td class="px-4 py-2"><%= membership.user.name %></td>
+          <td class="px-4 py-2"><%= membership.user.name %><br /><%= membership.user.email %></td>
+          <!--
           <td class="px-4 py-2"><%= membership.user.email %></td>
-          <td class="px-4 py-2 capitalize"><%= membership.role %></td>
+          -->
+          <td class="px-4 py-2 capitalize"><%= role_label(membership.role) %></td>
           <td class="px-4 py-2 space-x-2">
             <% if org_admin? %>
               <a href="<%= request.script_name %>/org/users/<%= membership.user.id %>/edit"

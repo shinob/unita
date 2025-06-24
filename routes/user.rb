@@ -19,6 +19,7 @@ class UserRoutes < Sinatra::Base
   
   get '/org/users' do
     #require_org_admin!
+    require_login
     @organization = current_organization
     @users = @organization.memberships.map(&:user)
     #@org_users = @organization.memberships.map(&:user)
@@ -100,4 +101,3 @@ class UserRoutes < Sinatra::Base
     erb :profile, layout: :layout
   end
   
-end
