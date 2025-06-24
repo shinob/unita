@@ -1,0 +1,17 @@
+<h1 class="text-2xl font-bold text-center text-gray-800 mb-6">ユーザープロフィール</h1>
+
+<div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto space-y-4">
+  <p><strong>名前:</strong> <%= @user.name %></p>
+  <p><strong>メール:</strong> <%= @user.email %></p>
+  <p><strong>会社名:</strong> <%= @user.company_name %></p>
+  <p><strong>部署:</strong> <%= @user.department %></p>
+  <p><strong>役職:</strong> <%= @user.position %></p>
+  <p><strong>電話番号:</strong> <%= @user.phone %></p>
+  <p><strong>住所:</strong> <%= @user.address %></p>
+  <p><strong>備考:</strong> <%= @user.notes %></p>
+  <p><strong>ロール:</strong> <%= role_label(@membership&.role) %></p>
+
+  <div class="mt-6 text-center">
+    <a href="<%= request.script_name %>/org/users" class="text-blue-600 hover:underline">← ユーザー一覧に戻る</a>
+  </div>
+</div>

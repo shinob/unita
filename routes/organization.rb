@@ -10,7 +10,7 @@ class OrganizationRoutes < Sinatra::Base
   use Rack::Session::Cookie,
     key: COOKIE_KEY,
     path: '/',
-    secret: COOKIE_SERCRET,
+    secret: COOKIE_SECRET,
     expire_after: COOKIE_EXPIRE,
     same_site: :lax
 

@@ -1,5 +1,6 @@
+<!--
 <h1 class="text-2xl font-bold mb-6 text-center">組織ユーザー管理</h1>
-
+-->
 <!-- ユーザー一覧 -->
 <h2 class="text-xl font-semibold mb-4">ユーザー一覧</h2>
 <div class="overflow-x-auto mb-8">
@@ -19,8 +20,15 @@
       <% @organization.memberships.each do |membership| %>
         <tr class="border-t hover:bg-gray-50">
           <td class="px-4 py-2"><%= membership.user.id %></td>
-          <td class="px-4 py-2"><%= membership.user.name %><br /><%= membership.user.email %></td>
+          <td class="px-4 py-2">
+            <a href="<%= request.script_name %>/org/users/<%= membership.user.id %>" class="text-blue-600 hover:underline">
+              <%= membership.user.name %>
+            </a>
+            <br />
+            <%= membership.user.email %>
+          </td>
           <!--
+          <td class="px-4 py-2"><%= membership.user.name %><br /><%= membership.user.email %></td>
           <td class="px-4 py-2"><%= membership.user.email %></td>
           -->
           <td class="px-4 py-2 capitalize"><%= role_label(membership.role) %></td>

@@ -8,7 +8,7 @@ class MeetingRoutes < Sinatra::Base
   use Rack::Session::Cookie,
     key: COOKIE_KEY,
     path: '/',
-    secret: COOKIE_SERCRET,
+    secret: COOKIE_SECRET,
     expire_after: COOKIE_EXPIRE,
     same_site: :lax
 
@@ -41,6 +41,7 @@ class MeetingRoutes < Sinatra::Base
     erb :meetings_list, layout: :layout
   end
 
+=begin
   get '/org/meetings/all' do
     redirect to(url('/login')) unless logged_in?
     halt(403, 'Access denied') unless current_organization
@@ -52,6 +53,35 @@ class MeetingRoutes < Sinatra::Base
       .order(:scheduled_at)
       .all
       
+    erb :meetings_list, layout: :layout
+  end
+=end
+  
+  get '/org/meetings/all' do
+    require_login
+    halt(403, 'Access denied') unless current_organization
+    ical_token
+  
+    dataset = Meeting.where(organization_id: current_organization.id)
+                     .enabled
+  
+    # フィルタ処理
+    if params[:keyword] && !params[:keyword].strip.empty?
+      keyword = "%#{params[:keyword].strip}%"
+      dataset = dataset.where(Sequel.like(:title, keyword)).or(Sequel.like(:description, keyword))
+    end
+  
+    if params[:from] && !params[:from].empty?
+      from_time = Time.parse(params[:from]) rescue nil
+      dataset = dataset.where { scheduled_at >= from_time } if from_time
+    end
+  
+    if params[:to] && !params[:to].empty?
+      to_time = Time.parse(params[:to]) + 86400 rescue nil
+      dataset = dataset.where { scheduled_at <= to_time } if to_time
+    end
+  
+    @meetings = dataset.order(:scheduled_at).all
     erb :meetings_list, layout: :layout
   end
 

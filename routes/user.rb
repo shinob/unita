@@ -10,7 +10,7 @@ class UserRoutes < Sinatra::Base
   use Rack::Session::Cookie,
     key: COOKIE_KEY,
     path: '/',
-    secret: COOKIE_SERCRET,
+    secret: COOKIE_SECRET,
     expire_after: COOKIE_EXPIRE,
     same_site: :lax
 
@@ -42,6 +42,7 @@ class UserRoutes < Sinatra::Base
   
   get '/org/users/:id/edit' do
     require_org_admin!
+    halt(403, 'Access denied') unless same_organization?(@user)
     @user = User[params[:id]]
     @membership = Membership.where(user_id: @user.id, organization_id: current_organization.id).first
     halt(403, 'Access denied') unless @membership
@@ -99,6 +100,16 @@ class UserRoutes < Sinatra::Base
     @message = "プロフィールを更新しました。"
     @user = user
     erb :profile, layout: :layout
+  end
+  
+  get '/org/users/:id' do
+    require_login
+    @user = User[params[:id]]
+    halt 404, "User not found" unless @user
+    halt 403, "Access denied" unless same_organization?(@user)
+  
+    @membership = Membership.where(user_id: @user.id, organization_id: current_organization.id).first
+    erb :show_user_profile, layout: :layout
   end
   
 end

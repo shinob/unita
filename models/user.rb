@@ -3,6 +3,7 @@
 
 #DB = Sequel.sqlite('db/attendance.db')
 Sequel::Model.plugin :timestamps
+Sequel::Model.plugin :validation_helpers
 
 class User < Sequel::Model
   one_to_many :memberships
@@ -25,4 +26,11 @@ class User < Sequel::Model
   rescue BCrypt::Errors::InvalidHash
     false
   end
+  
+  def validate
+    super
+    validates_unique :email
+    validates_presence [:name, :email, :password_digest]
+  end
+  
 end

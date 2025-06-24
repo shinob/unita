@@ -47,6 +47,31 @@
   </div>
 </div>
 
+<!-- フィルタフォーム -->
+<form method="get" action="<%= request.script_name %>/org/meetings/all" class="mb-6 space-y-4 bg-gray-50 p-4 rounded-lg shadow">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <input type="text" name="keyword" placeholder="キーワード検索"
+           value="<%= params[:keyword] %>"
+           class="px-4 py-2 border border-gray-300 rounded-md">
+
+    <input type="date" name="from" value="<%= params[:from] %>"
+           class="px-4 py-2 border border-gray-300 rounded-md">
+
+    <input type="date" name="to" value="<%= params[:to] %>"
+           class="px-4 py-2 border border-gray-300 rounded-md">
+  </div>
+
+  <div class="mt-2">
+    <button type="submit"
+            class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+      絞り込む
+    </button>
+    <a href="<%= request.script_name %>/org/meetings/all"
+       class="ml-4 text-gray-600 underline">リセット</a>
+  </div>
+</form>
+
+<!-- 予定追加 -->
 <% if organizer? %>
   <div class="mt-8">
     <a href="<%= request.script_name %>/org/meetings/new"
