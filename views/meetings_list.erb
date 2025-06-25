@@ -3,31 +3,31 @@
 <!-- 予定一覧テーブル（レスポンシブ対応） -->
 <div class="overflow-x-auto w-full">
   <table class="min-w-[600px] w-full table-auto border border-gray-300 shadow-sm rounded-lg bg-white">
-    <thead class="bg-blue-600 text-white">
+    <thead class="bg-primaryDark text-white">
       <tr>
+        <th class="px-4 py-2 text-center">&nbsp;</th>
         <th class="px-4 py-2">タイトル</th>
         <th class="px-4 py-2">説明</th>
         <th class="px-4 py-2 text-center">開催日時</th>
         <th class="px-4 py-2 text-center">締切日時</th>
-        <th class="px-4 py-2 text-center">操作</th>
       </tr>
     </thead>
     <tbody>
       <% @meetings.each do |meeting| %>
         <% status_class = case status?(meeting.id)
-          when 'attending' then 'bg-green-50'
-          when 'absent' then 'bg-red-50'
-          else 'bg-gray-100'
+          when 'attending' then 'bg-green-100 text-green-700'
+          when 'absent' then 'bg-red-100 text-red-700'
+          else 'bg-yellow-100 text-yellow-700'
         end %>
         <tr class="border-t <%= status_class %> hover:bg-yellow-50 transition">
-          <td class="px-4 py-2 font-medium text-gray-900"><%= meeting.title %></td>
-          <td class="px-4 py-2 text-gray-700"><%= meeting.description[0..20] %><%= "..." if meeting.description.length > 20 %></td>
+          <td class="px-4 py-2 text-center">
+          <a href="<%= request.script_name %>/org/meetings/<%= meeting.id %>"
+             class="text-accent hover:underline font-semibold">詳細</a>
+          </td>
+          <td class="px-4 py-2 font-medium"><%= meeting.title %></td>
+          <td class="px-4 py-2"><%= meeting.description[0..20] %><%= "..." if meeting.description.length > 20 %></td>
           <td class="px-4 py-2 text-center"><%= meeting.scheduled_at.strftime('%Y-%m-%d %H:%M') %></td>
           <td class="px-4 py-2 text-center"><%= meeting.deadline_at.strftime('%Y-%m-%d %H:%M') %></td>
-          <td class="px-4 py-2 text-center">
-            <a href="<%= request.script_name %>/org/meetings/<%= meeting.id %>"
-               class="text-blue-600 hover:underline font-semibold">詳細</a>
-          </td>
         </tr>
       <% end %>
     </tbody>
@@ -35,7 +35,7 @@
 </div>
 
 <!-- 出欠ステータス凡例 -->
-<div class="mt-6 flex flex-wrap gap-4 text-sm text-gray-700">
+<div class="mt-6 mb-8 flex flex-wrap gap-4 text-sm text-gray-700">
   <div class="flex items-center gap-2">
     <div class="w-4 h-4 bg-green-200 border border-green-500 rounded-sm"></div> 出席
   </div>
@@ -43,12 +43,12 @@
     <div class="w-4 h-4 bg-red-200 border border-red-500 rounded-sm"></div> 欠席
   </div>
   <div class="flex items-center gap-2">
-    <div class="w-4 h-4 bg-gray-300 border border-gray-500 rounded-sm"></div> 未定
+    <div class="w-4 h-4 bg-yellow-200 border border-yellow-500 rounded-sm"></div> 未定
   </div>
 </div>
 
 <!-- フィルタフォーム -->
-<form method="get" action="<%= request.script_name %>/org/meetings/all" class="mb-6 space-y-4 bg-gray-50 p-4 rounded-lg shadow">
+<form method="get" action="<%= request.script_name %>/org/meetings/all" class="mb-6 space-y-4 bg-muted p-4 rounded-lg shadow">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     <input type="text" name="keyword" placeholder="キーワード検索"
            value="<%= params[:keyword] %>"
@@ -63,7 +63,7 @@
 
   <div class="mt-2">
     <button type="submit"
-            class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+            class="bg-primaryDark text-white px-6 py-2 rounded hover:bg-blue-700 transition">
       絞り込む
     </button>
     <a href="<%= request.script_name %>/org/meetings/all"
@@ -75,7 +75,7 @@
 <% if organizer? %>
   <div class="mt-8">
     <a href="<%= request.script_name %>/org/meetings/new"
-       class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow">
+       class="inline-block bg-accent hover:bg-purple-700 text-white px-6 py-2 rounded shadow transition">
       ＋ 新しい予定を作成
     </a>
   </div>
@@ -87,7 +87,7 @@
   <input type="text" id="ical_url"
          value="<%= request.base_url %><%= request.script_name %>/org/<%= current_organization.id %>/<%= current_organization.ical_token %>.ics"
          readonly onclick="copyToClipboard()"
-         class="w-full mt-1 px-3 py-2 border border-gray-300 rounded bg-gray-50 text-sm font-mono">
+         class="w-full mt-1 px-3 py-2 border border-gray-300 rounded bg-gray-100 text-sm font-mono">
 </div>
 
 <script>

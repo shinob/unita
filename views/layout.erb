@@ -2,22 +2,25 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title><%= @title || "出欠管理アプリ" %></title>
+  <title><%= @title || "予定・会員出欠管理" %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Alpine.js for hamburger menu -->
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
-  <script>
+<script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: '#2563eb',
+            primary: '#3b82f6',
+            primaryDark: '#2563eb',
+            accent: '#9333ea',
             danger: '#dc2626',
             success: '#16a34a',
-            grayBg: '#f9fafb',
+            muted: '#f3f4f6',
+            text: '#1f2937',
           }
         }
       }

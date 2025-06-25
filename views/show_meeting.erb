@@ -30,6 +30,12 @@
   <div class="bg-blue-50 p-6 rounded-lg shadow mb-6">
     <h2 class="text-lg font-semibold text-blue-800 mb-2">出欠登録</h2>
 
+    <% if params[:error] == 'deadline' %>
+      <div class="bg-yellow-100 text-yellow-800 px-4 py-3 rounded mb-4">
+        この予定の出欠登録は締切を過ぎているため、変更できません。
+      </div>
+    <% end %>
+    
     <form action="<%= request.script_name %>/org/meetings/<%= @meeting.id %>/respond" method="post" class="space-y-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">出欠</label>

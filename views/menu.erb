@@ -1,7 +1,7 @@
 <nav class="bg-blue-600 text-white rounded-lg mb-6">
   <div class="flex flex-wrap items-center justify-between p-4">
     <div class="text-lg font-semibold">
-      <a href="<%= request.script_name %>/" class="hover:underline">会員・予定出欠管理</a>
+      <a href="<%= request.script_name %>/" class="hover:underline">予定・会員出欠管理</a>
     </div>
 <!--
     <div class="text-lg font-semibold">
@@ -26,18 +26,18 @@
 
     <% if org_admin? %>
       <li><a href="<%= request.script_name %>/org/meetings/all" class="block py-2 hover:underline">予定</a></li>
-      <li><a href="<%= request.script_name %>/org/users" class="block py-2 hover:underline">ユーザー</a></li>
+      <li><a href="<%= request.script_name %>/org/users" class="block py-2 hover:underline">会員</a></li>
       <li><a href="<%= request.script_name %>/org/edit" class="block py-2 hover:underline">組織</a></li>
     <li><a href="<%= request.script_name %>/profile" class="block py-2 hover:underline">プロフィール</a></li>
 
     <% elsif organizer? %>
       <li><a href="<%= request.script_name %>/org/meetings/all" class="block py-2 hover:underline">予定</a></li>
-      <li><a href="<%= request.script_name %>/org/users" class="block py-2 hover:underline">ユーザー</a></li>
+      <li><a href="<%= request.script_name %>/org/users" class="block py-2 hover:underline">会員</a></li>
       <li><a href="<%= request.script_name %>/profile" class="block py-2 hover:underline">プロフィール</a></li>
 
     <% elsif user? %>
       <li><a href="<%= request.script_name %>/org/meetings/all" class="block py-2 hover:underline">予定</a></li>
-      <li><a href="<%= request.script_name %>/org/users" class="block py-2 hover:underline">ユーザー</a></li>
+      <li><a href="<%= request.script_name %>/org/users" class="block py-2 hover:underline">会員</a></li>
       <li><a href="<%= request.script_name %>/profile" class="block py-2 hover:underline">プロフィール</a></li>
     <% end %>
 

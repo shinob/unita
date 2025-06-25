@@ -164,10 +164,14 @@ class MeetingRoutes < Sinatra::Base
     halt(403, 'Access denied') unless participant
     halt(403, 'Only users in the same organization can respond') unless same_organization?(current_user)
 
-    if meeting.deadline_at && Time.now > meeting.deadline_at && !current_user.roles_for(current_organization.id).include?('org_admin')
-      halt(403, 'The deadline for responses has passed')
-    end
+    #if meeting.deadline_at && Time.now > meeting.deadline_at && !current_user.roles_for(current_organization.id).include?('org_admin')
+    #  halt(403, 'The deadline for responses has passed')
+    #end
 
+    if meeting.deadline_at && Time.now > meeting.deadline_at && !current_user.roles_for(current_organization.id).include?('org_admin')
+      redirect to(url("/org/meetings/#{meeting.id}?error=deadline"))
+    end
+    
     participant.set(status: params[:status], comment: params[:comment])
     participant.save
 

@@ -1,16 +1,21 @@
 <!-- ユーザープロフィール -->
-<h1 class="text-2xl font-bold text-center text-gray-800 mb-6">ユーザープロフィール</h1>
+<h1 class="text-2xl font-bold text-center text-gray-800 mb-6">プロフィール</h1>
 
-<div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto space-y-4">
-  <p><strong>名前:</strong> <%= @user.name %></p>
-  <p><strong>メール:</strong> <%= @user.email %></p>
-  <p><strong>会社名:</strong> <%= @user.company_name %></p>
-  <p><strong>部署:</strong> <%= @user.department %></p>
-  <p><strong>役職:</strong> <%= @user.position %></p>
-  <p><strong>電話番号:</strong> <%= @user.phone %></p>
-  <p><strong>住所:</strong> <%= @user.address %></p>
-  <p><strong>備考:</strong> <%= @user.notes %></p>
-  <p><strong>ロール:</strong> <%= role_label(@membership&.role) %></p>
+<div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto">
+  <table class="table-auto w-full text-left border border-gray-200">
+    <tbody class="divide-y divide-gray-100">
+      <tr><th class="p-2 w-32 font-medium text-gray-600">名前</th><td class="p-2"><%= @user.name %></td></tr>
+      <tr><th class="p-2 font-medium text-gray-600">メール</th><td class="p-2"><%= @user.email %></td></tr>
+      <tr><th class="p-2 font-medium text-gray-600">会社名</th><td class="p-2"><%= @user.company_name %></td></tr>
+      <tr><th class="p-2 font-medium text-gray-600">部署</th><td class="p-2"><%= @user.department %></td></tr>
+      <tr><th class="p-2 font-medium text-gray-600">役職</th><td class="p-2"><%= @user.position %></td></tr>
+      <tr><th class="p-2 font-medium text-gray-600">電話番号</th><td class="p-2"><%= @user.phone %></td></tr>
+      <tr><th class="p-2 font-medium text-gray-600">住所</th><td class="p-2"><%= @user.address %></td></tr>
+      <tr><th class="p-2 font-medium text-gray-600">備考</th><td class="p-2"><%= @user.notes %></td></tr>
+      <tr><th class="p-2 font-medium text-gray-600">ロール</th><td class="p-2"><%= role_label(@membership&.role) %></td></tr>
+    </tbody>
+  </table>
+
   <div class="mt-6 text-center">
     <a href="<%= request.script_name %>/org/users" class="text-blue-600 hover:underline">← 一覧に戻る</a>
   </div>
