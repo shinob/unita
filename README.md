@@ -104,6 +104,6 @@ Google カレンダー等に取り込むことで予定を自動反映可能で�
 ## 📄 ライセンス
 
 MIT License  
-© 2025 [your-name]
+© 2025 blueOmega
 
 ---
