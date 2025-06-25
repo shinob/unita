@@ -3,26 +3,26 @@
 <div class="bg-white p-6 rounded-lg shadow mb-6 space-y-2">
   <p><strong>📅 開始日時:</strong> <%= @meeting.scheduled_at.strftime('%Y-%m-%d %H:%M') %></p>
   <p><strong>🕒 終了日時:</strong> <%= @meeting.ended_at.strftime('%Y-%m-%d %H:%M') %></p>
-  <p><strong>✏️ 説明:</strong> <%= @meeting.description %></p>
+  <p><strong>✏️ 説明:</strong>
+    <pre><%= @meeting.description %></pre>
+  </p>
   <p><strong>⏰ 回答締切:</strong> <%= @meeting.deadline_at&.strftime('%Y-%m-%d %H:%M') || 'なし' %></p>
 </div>
 
-<% if organizer? || org_admin? %>
+<% if organizer? %>
   <div class="flex space-x-4 mb-6">
     <a href="<%= request.script_name %>/org/meetings/<%= @meeting.id %>/edit"
        class="inline-block bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded transition">
       編集
     </a>
 
-    <% if organizer? %>
-      <form method="post" action="<%= request.script_name %>/org/meetings/<%= @meeting.id %>/disable"
-            onsubmit="return confirm('この会議を無効化しますか？');" class="inline-block">
-        <button type="submit"
-                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition">
-          無効化
-        </button>
-      </form>
-    <% end %>
+    <form method="post" action="<%= request.script_name %>/org/meetings/<%= @meeting.id %>/disable"
+          onsubmit="return confirm('この予定を無効化しますか？');" class="inline-block">
+      <button type="submit"
+              class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition">
+        無効化
+      </button>
+    </form>
   </div>
 <% end %>
 

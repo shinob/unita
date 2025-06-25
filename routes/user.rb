@@ -42,8 +42,11 @@ class UserRoutes < Sinatra::Base
   
   get '/org/users/:id/edit' do
     require_org_admin!
-    halt(403, 'Access denied') unless same_organization?(@user)
+    
     @user = User[params[:id]]
+    halt(404, 'User not found') unless @user
+    halt(403, 'Access denied') unless same_organization?(@user)
+    
     @membership = Membership.where(user_id: @user.id, organization_id: current_organization.id).first
     halt(403, 'Access denied') unless @membership
     erb :edit_org_user, layout: :layout
@@ -102,6 +105,7 @@ class UserRoutes < Sinatra::Base
     erb :profile, layout: :layout
   end
   
+=begin
   get '/org/users/:id' do
     require_login
     @user = User[params[:id]]
@@ -109,6 +113,28 @@ class UserRoutes < Sinatra::Base
     halt 403, "Access denied" unless same_organization?(@user)
   
     @membership = Membership.where(user_id: @user.id, organization_id: current_organization.id).first
+    erb :show_user_profile, layout: :layout
+  end
+=end
+  
+  get '/org/users/:id' do
+    require_login
+    @user = User[params[:id]]
+    halt 404, "User not found" unless @user
+    halt 403, "Access denied" unless same_organization?(@user)
+  
+    @membership = Membership.where(user_id: @user.id, organization_id: current_organization.id).first
+  
+    # 出欠データを取得（DBフィルタ + eager読み込み）
+    @participations = Participant
+      .where(user_id: @user.id)
+      .join(:meetings, id: :meeting_id)
+      .where(Sequel[:meetings][:organization_id] => current_organization.id)
+      .order(Sequel[:meetings][:scheduled_at])  # ← ソート追加
+      .select_all(:participants)
+      .eager(:meeting)
+      .all
+    
     erb :show_user_profile, layout: :layout
   end
   

@@ -21,7 +21,7 @@
         end %>
         <tr class="border-t <%= status_class %> hover:bg-yellow-50 transition">
           <td class="px-4 py-2 font-medium text-gray-900"><%= meeting.title %></td>
-          <td class="px-4 py-2 text-gray-700"><%= meeting.description %></td>
+          <td class="px-4 py-2 text-gray-700"><%= meeting.description[0..20] %><%= "..." if meeting.description.length > 20 %></td>
           <td class="px-4 py-2 text-center"><%= meeting.scheduled_at.strftime('%Y-%m-%d %H:%M') %></td>
           <td class="px-4 py-2 text-center"><%= meeting.deadline_at.strftime('%Y-%m-%d %H:%M') %></td>
           <td class="px-4 py-2 text-center">

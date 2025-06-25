@@ -45,8 +45,13 @@ module AuthHelper
     halt(403, 'Access denied') unless current_user&.roles_for(current_organization&.id)&.include?('organizer')
   end
   
+  #def same_organization?(user)
+  #  user.organizations.map(&:id).include?(current_organization&.id)
+  #end
+  
   def same_organization?(user)
-    user.organizations.map(&:id).include?(current_organization&.id)
+    return false unless user && current_organization
+    user.organizations.map(&:id).include?(current_organization.id)
   end
   
   def status?(meeting_id)

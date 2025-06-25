@@ -1,3 +1,4 @@
+<!-- ユーザープロフィール -->
 <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">ユーザープロフィール</h1>
 
 <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto space-y-4">
@@ -10,8 +11,35 @@
   <p><strong>住所:</strong> <%= @user.address %></p>
   <p><strong>備考:</strong> <%= @user.notes %></p>
   <p><strong>ロール:</strong> <%= role_label(@membership&.role) %></p>
-
   <div class="mt-6 text-center">
-    <a href="<%= request.script_name %>/org/users" class="text-blue-600 hover:underline">← ユーザー一覧に戻る</a>
+    <a href="<%= request.script_name %>/org/users" class="text-blue-600 hover:underline">← 一覧に戻る</a>
   </div>
 </div>
+
+<!-- 出欠回答一覧 -->
+<% if @participations && !@participations.empty? %>
+  <div class="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto mt-8">
+    <h2 class="text-lg font-semibold mb-4">出欠回答一覧</h2>
+    <table class="w-full table-auto border border-gray-300">
+      <thead>
+        <tr class="bg-gray-200 text-left">
+          <th class="p-2">予定名</th>
+          <th class="p-2 text-center">日時</th>
+          <th class="p-2 text-center">出欠</th>
+          <th class="p-2">コメント</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @participations.each do |p| %>
+          <% next unless p.meeting %>
+          <tr class="border-t <%= p.status == 'attending' ? 'bg-green-50' : p.status == 'absent' ? 'bg-red-50' : 'bg-gray-100' %>">
+            <td class="p-2"><%= p.meeting.title %></td>
+            <td class="p-2 text-center"><%= p.meeting.scheduled_at.strftime('%Y-%m-%d %H:%M') %></td>
+            <td class="p-2 text-center"><%= {'attending' => '出席', 'absent' => '欠席', 'undecided' => '未定'}[p.status] %></td>
+            <td class="p-2"><%= p.comment %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
