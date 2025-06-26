@@ -1,7 +1,7 @@
 # app.rb
 require 'sinatra'
 require 'sinatra/reloader' if development?
-require 'dotenv/load'
+#require 'dotenv/load'
 require 'sequel'
 require 'bcrypt'
 require 'json'
