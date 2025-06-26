@@ -14,7 +14,6 @@ require_relative './config/setting'
 
 set :bind, '0.0.0.0'
 set :port, APP_PORT
-#set :public_folder, File.expand_path('public', __dir__)
 set :public_folder, 'public'
 set :views, 'views'
 
@@ -26,7 +25,6 @@ use Rack::Session::Cookie,
   same_site: :lax
 
 DB = Sequel.sqlite(DB_PATH)
-#Sequel::Model.db = DB
 
 # --- DB定義（完全版） ---
 DB.create_table? :users do
@@ -107,28 +105,10 @@ use MeetingRoutes
 require_relative './routes/admin'
 use AdminRoutes
 
-# --- 認証ヘルパー ---
-  
-=begin
-helpers do
-end
-=end  
-
 before do
   if request.env['HTTP_X_FORWARDED_PREFIX']
     request.script_name = request.env['HTTP_X_FORWARDED_PREFIX']
   end
-end
-
-def test_form()
-  session[:i] = 0 unless session[:i]
-  session[:i] += 1
-  <<EOF
-test: #{session[:i]}
-<form method=post action="/schedule/">
-  <input type="submit" value="test" />
-</form>
-EOF
 end
 
 # --- ルーティング ---
@@ -177,6 +157,8 @@ get '/debug_session' do
   
   text
 end
+
+# --- ダッシュボード ---
 
 get '/dashboard' do
   require_login
