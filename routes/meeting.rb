@@ -228,11 +228,11 @@ class MeetingRoutes < Sinatra::Base
   
     bom = "\uFEFF"  # UTF-8 BOM
     csv_data = CSV.generate(headers: true) do |csv|
-      csv << ['ユーザー名', 'メールアドレス', '出欠ステータス', 'コメント']
+      csv << ['ユーザー名', 'ソートキー', '出欠ステータス', 'コメント']
       participants.each do |p|
         csv << [
           p.user.name,
-          p.user.email,
+          p.user.sort_key,
           { 'attending' => '出席', 'absent' => '欠席', 'undecided' => '未定' }[p.status],
           p.comment
         ]
