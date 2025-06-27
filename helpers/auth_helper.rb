@@ -45,6 +45,22 @@ module AuthHelper
     halt(403, 'Access denied') unless current_user&.roles_for(current_organization&.id)&.include?('organizer')
   end
   
+  def require_organizer_or_admin!
+    
+    flg = false
+    
+    if current_user&.roles_for(current_organization&.id)&.include?('organizer')
+      flg = true
+    end
+    
+    if current_user&.roles_for(current_organization&.id)&.include?('org_admin')
+      flg = true
+    end
+
+    halt(403, 'Access denied') unless flg
+    
+  end
+  
   #def same_organization?(user)
   #  user.organizations.map(&:id).include?(current_organization&.id)
   #end

@@ -45,6 +45,7 @@ Ubuntuの場合
 sudo apt install -y ruby-sinatra ruby-sinatra-contrib ruby-sequel ruby-bcrypt ruby-icalendar ruby-sqlite3
 git clone https://github.com/shinob/unita.git
 cd unita
+mkdir db
 cp config/setting.rb.sample config/setting.rb
 # config/setting.rb を環境に合わせて修正
 ```
@@ -91,6 +92,7 @@ Google カレンダー等に取り込むことで予定を自動反映可能で�
 ├── app.rb                 # メインアプリケーション
 ├── config/
 │   └── setting.rb         # 設定ファイル
+├── db/                    # DBファイル
 ├── models/                # DBモデル
 ├── routes/                # 各機能のルーティング
 ├── views/                 # ERBテンプレート

@@ -1,5 +1,7 @@
 # routes/meeting.rb
 require 'sinatra/base'
+require 'csv'
+
 require_relative '../models/meeting'
 require_relative '../models/participant'
 require_relative '../helpers/auth_helper'
@@ -20,18 +22,17 @@ class MeetingRoutes < Sinatra::Base
       request.script_name = request.env['HTTP_X_FORWARDED_PREFIX']
     end
   end
-
+  
+  # ダッシュボード用ミーティング一覧
   get '/org/meetings' do
     redirect to(url('/login')) unless logged_in?
     halt(403, 'Access denied') unless current_organization
     
     ical_token
     
-    cutoff_time = Time.now - (7 * 24 * 60 * 60)
-    #@meetings = Meeting.where(organization_id: current_organization.id)
-    #                   .where { scheduled_at > cutoff_time }
-    #                   .order(:scheduled_at)
-    #                   .all
+    # d日経過した予定は表示しない
+    d = 1
+    cutoff_time = Time.now - (d * 24 * 60 * 60)
     @meetings = Meeting.where(organization_id: current_organization.id)
                         .enabled
                         .where { scheduled_at > cutoff_time }
@@ -41,22 +42,6 @@ class MeetingRoutes < Sinatra::Base
     erb :meetings_list, layout: :layout
   end
 
-=begin
-  get '/org/meetings/all' do
-    redirect to(url('/login')) unless logged_in?
-    halt(403, 'Access denied') unless current_organization
-    
-    ical_token
-        
-    @meetings = Meeting.where(organization_id: current_organization.id)
-      .enabled
-      .order(:scheduled_at)
-      .all
-      
-    erb :meetings_list, layout: :layout
-  end
-=end
-  
   get '/org/meetings/all' do
     require_login
     halt(403, 'Access denied') unless current_organization
@@ -85,11 +70,13 @@ class MeetingRoutes < Sinatra::Base
     erb :meetings_list, layout: :layout
   end
 
+  # 新規予定フォーム
   get '/org/meetings/new' do
     require_organizer!
     erb :new_meeting, layout: :layout
   end
 
+  # 予定追加
   post '/org/meetings/create' do
     require_organizer!
     meeting = Meeting.new(
@@ -113,6 +100,7 @@ class MeetingRoutes < Sinatra::Base
     redirect to(url("/org/meetings/#{meeting.id}"))
   end
 
+  # 予定詳細表示
   get '/org/meetings/:id' do
     @meeting = Meeting[params[:id]]
     halt(404, 'Meeting not found') unless @meeting
@@ -130,6 +118,7 @@ class MeetingRoutes < Sinatra::Base
     erb :show_meeting, layout: :layout
   end
 
+  # 予定編集フォーム
   get '/org/meetings/:id/edit' do
     require_organizer!
     @meeting = Meeting[params[:id]]
@@ -138,6 +127,7 @@ class MeetingRoutes < Sinatra::Base
     erb :edit_meeting, layout: :layout
   end
 
+  # 予定更新
   post '/org/meetings/:id/update' do
     require_organizer!
     meeting = Meeting[params[:id]]
@@ -156,6 +146,7 @@ class MeetingRoutes < Sinatra::Base
     redirect to(url("/org/meetings/#{meeting.id}"))
   end
 
+  # 出欠回答
   post '/org/meetings/:id/respond' do
     meeting = Meeting[params[:id]]
     halt(403, 'Access denied') unless meeting.organization_id == current_organization.id
@@ -178,8 +169,11 @@ class MeetingRoutes < Sinatra::Base
     redirect to(url("/org/meetings/#{meeting.id}"))
   end
 
+  # 管理者による出欠登録フォーム
   get '/org/meetings/:id/respond_admin' do
-    require_org_admin!
+    #require_org_admin!
+    require_organizer_or_admin!
+    
     @meeting = Meeting[params[:id]]
     halt(403, 'Access denied') unless @meeting.organization_id == current_organization.id
 
@@ -190,8 +184,11 @@ class MeetingRoutes < Sinatra::Base
     erb :admin_respond_meeting, layout: :layout
   end
 
+  # 管理者による出欠登録
   post '/org/meetings/:id/respond_admin' do
-    require_org_admin!
+    #require_org_admin!
+    require_organizer_or_admin!
+    
     @meeting = Meeting[params[:id]]
     halt(403, 'Access denied') unless @meeting.organization_id == current_organization.id
 
@@ -205,12 +202,43 @@ class MeetingRoutes < Sinatra::Base
     redirect to(url("/org/meetings/#{@meeting.id}"))
   end
   
+  # 管理者による出欠登録
   post '/org/meetings/:id/disable' do
     require_organizer!
     meeting = Meeting[params[:id]]
     halt(403, 'Access denied') unless meeting.organization_id == current_organization.id
     meeting.update(disabled: true)
     redirect to(url('/org/meetings'))
+  end
+  
+  # 出欠データのCSVダウンロード
+  get '/org/meetings/:id/export_csv' do
+    #require_organizer!  # または require_org_admin!
+    require_organizer_or_admin!
+  
+    meeting = Meeting[params[:id]]
+    halt(404, 'Meeting not found') unless meeting
+    halt(403, 'Access denied') unless meeting.organization_id == current_organization.id
+  
+    participants = meeting.participants_dataset.eager(:user).all
+  
+    content_type 'text/csv'
+    attachment "meeting_#{meeting.id}_participants.csv"
+  
+    bom = "\uFEFF"  # UTF-8 BOM
+    csv_data = CSV.generate(headers: true) do |csv|
+      csv << ['ユーザー名', 'メールアドレス', '出欠ステータス', 'コメント']
+      participants.each do |p|
+        csv << [
+          p.user.name,
+          p.user.email,
+          { 'attending' => '出席', 'absent' => '欠席', 'undecided' => '未定' }[p.status],
+          p.comment
+        ]
+      end
+    end
+  
+    bom + csv_data  # BOMを先頭に付けて返す
   end
   
 end
