@@ -113,6 +113,7 @@ class MeetingRoutes < Sinatra::Base
     end
 
     @participants = @meeting.participants.select { |p| same_organization?(p.user) }
+      .sort_by { |m| m.user&.sort_key || m.user&.name || '' }
     @participant = @participants.find { |p| p.user_id == current_user.id }
 
     erb :show_meeting, layout: :layout

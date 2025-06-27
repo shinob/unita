@@ -22,6 +22,12 @@
     </div>
 
     <div>
+      <label class="block text-sm font-medium text-gray-700">ソートキー</label>
+      <input type="text" name="sort_key" value="<%= @user.sort_key %>"
+             class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md">
+    </div>
+    
+    <div>
       <label class="block text-sm font-medium text-gray-700">ロール</label>
       <select name="role" required
               class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200 focus:outline-none">
@@ -37,7 +43,7 @@
         更新
       </button>
       <a href="<%= request.script_name %>/org/users"
-         class="text-gray-600 hover:underline text-sm">← ユーザー一覧に戻る</a>
+         class="text-gray-600 hover:underline text-sm">← 会員一覧に戻る</a>
     </div>
   </form>
 </div>

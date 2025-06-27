@@ -21,9 +21,7 @@ class UserRoutes < Sinatra::Base
     #require_org_admin!
     require_login
     @organization = current_organization
-    @users = @organization.memberships.map(&:user) #.sort_by(&:name)
-    #@org_users = @organization.memberships.map(&:user)
-    #@org_users = current_organization.organization_users.includes(:user)
+    @memberships = @organization.memberships.sort_by { |m| m.user&.sort_key || m.user&.name || '' }
     erb :org_users, layout: :layout
   end
 

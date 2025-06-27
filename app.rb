@@ -40,6 +40,7 @@ DB.create_table? :users do
   String :position
   String :address
   String :notes
+  TEXT   :sort_key
   DateTime :last_login_at
   DateTime :created_at
   DateTime :updated_at

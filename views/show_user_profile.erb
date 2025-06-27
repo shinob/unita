@@ -12,6 +12,7 @@
       <tr><th class="p-2 font-medium text-gray-600">電話番号</th><td class="p-2"><%= @user.phone %></td></tr>
       <tr><th class="p-2 font-medium text-gray-600">住所</th><td class="p-2"><%= @user.address %></td></tr>
       <tr><th class="p-2 font-medium text-gray-600">備考</th><td class="p-2"><%= @user.notes %></td></tr>
+      <tr><th class="p-2 font-medium text-gray-600">ソートキー</th><td class="p-2"><%= @user.sort_key %></td></tr>
       <tr><th class="p-2 font-medium text-gray-600">ロール</th><td class="p-2"><%= role_label(@membership&.role) %></td></tr>
     </tbody>
   </table>
